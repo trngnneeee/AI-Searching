@@ -22,36 +22,44 @@ class Pen(turtle.Turtle):
         self.penup()
         self.speed(0)
 
+class Player(turtle.Turtle):
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.shape("square")
+        self.color("blue")
+        self.penup()
+        self.speed(0)
+
 #Create levels list
 levels = [""]
 
 #Define first level
 level_1 = [
-"XXXXXXXXXXXXXXXXXXXXXXXX",
-"    X                  X",
-"XXX X XXXXXXXXXXXXXXXX X",
+"XXXXXXXXXXXXXXXXXXXXXXX",
+"P   X                 X",
+"XXX X XXXXXXXXXXXXXXX X",
 "X   X X             X X",
 "X X X XXXXXXXXXXXXX X X",
 "X X   X           X X X",
-"X X XXX XXXXXXXX X X X",
+"X X XXX XXXXXXXX  X X X",
 "X X X   X       X X X X",
-"X X XXXXXXXXXXXX X X X",
+"X X XXXXXXXXXXXX  X X X",
 "X X   X       X X X X X",
-"X XXXXX XXXXXX X X X X",
+"X XXXXX XXXXXX  X X X X",
 "X       X     X   X X X",
-"XXXXXXXXX XX XXXXXXX X X",
+"XXXXXXXX XX XXXXXXX X X",
 "X         X         X X",
-"X XXXXXXXXX XXXXXXXX X X",
-"X X               X     X",
-"X X XXXXXXXXXXXXXXXX XXXX",
-"X X X             X   XX",
-"X X XXXXXXXXXXXXXXXX XXX",
+"X XXXXXXXXX XXXXXXX X X",
+"X X               X   X",
+"X X XXXXXXXXXXXXXXXX XX",
+"X X X            X   XX",
+"X X XXXXXXXXXXXXXXXX XX",
 "X   X               X X",
 "XXXXXXXXXXXXXXX XXXXX X",
 "X                 X X X",
 "X XXXXXXXXXXXXXXX X X X",
 "X                 X   X",
-"XXXXXXXXXXXXXXXXXXXXXXXX"
+"XXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
 #Add maze to mazes list 
@@ -71,11 +79,12 @@ def setup_maze(level):
                 pen.goto(screen_x, screen_y)
                 pen.stamp()
 
-            #if character == "P":
-               # pen.goto(screen_x, screen_y)
+            if character == "P":
+               player.goto(screen_x, screen_y)
 
 #Create class instance
 pen = Pen()
+player = Player()
 
 #Set up the level
 setup_maze(levels[1])
