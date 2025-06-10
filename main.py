@@ -70,6 +70,12 @@ def setup_maze(maze):
                 continue
             elif value == 2:
                 player.goto(screen_x, screen_y)
+            elif value == 3: 
+                pen.goto(screen_x, screen_y)
+                pen.shape("square")
+                pen.color("red")
+                pen.stamp()
+                pen.color("white")
 
 #Create class instance
 pen = Pen()
