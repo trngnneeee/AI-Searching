@@ -3,6 +3,7 @@ import math
 import time
 
 import maze
+from Pen import Pen 
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -14,15 +15,6 @@ turtle.register_shape("img/goku_right.gif")
 turtle.register_shape("img/goku_left.gif")
 turtle.register_shape("img/treasure.gif")
 turtle.register_shape("img/wall.gif")
-
-#Create Pen
-class Pen(turtle.Turtle):
-    def __init__(self):
-        turtle.Turtle.__init__(self)
-        self.shape("square")
-        self.color("white")
-        self.penup()
-        self.speed(0)
 
 class Player(turtle.Turtle):
     def __init__(self):
@@ -57,8 +49,8 @@ levels.append(level_1)
 
 #Create Level Setup Function
 def setup_maze(maze):
-    for y in range(len(maze)):
-        for x in range(len(maze[y])):
+    for y in range(len(maze) - 1):
+        for x in range(len(maze[y]) - 1):
             value = maze[y][x]
             screen_x = -288 + (x * 24)
             screen_y = 288 - (y * 24)
