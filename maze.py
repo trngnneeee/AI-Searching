@@ -1,4 +1,6 @@
 import random
+from Pen import Pen 
+from Player import Player
 
 def generateMaze(height, width): 
     maze = [[1 for _ in range(width)] for _ in range(height)] 
@@ -26,3 +28,31 @@ def generateMaze(height, width):
     maze[1][1] = 2
 
     return maze
+
+def setup_maze(maze):
+    pen = Pen("square")
+    player = Player()
+
+    for y in range(len(maze) - 1):
+        for x in range(len(maze[y]) - 1):
+            value = maze[y][x]
+            screen_x = -288 + (x * 24)
+            screen_y = 288 - (y * 24)
+
+            #wall
+            if value == 1:
+                pen.goto(screen_x, screen_y)
+                pen.stamp()
+            elif value == 0:
+                continue
+            #start
+            elif value == 2:
+                player.goto(screen_x, screen_y)
+            #goal
+            elif value == 3: 
+                
+                pen.goto(screen_x, screen_y)
+                pen.shape("square")
+                pen.color("red")
+                pen.stamp()
+                pen.color("white")

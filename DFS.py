@@ -30,7 +30,38 @@ def generateDFSPath(maze, start, goal):
     dfs(*start) 
     return correct_path, path[::-1]
 
-def drawDFS(corectPath, path): 
-    path_Turtle = Pen()
+def drawDFS(corectPath, path, start, goal): 
+    path_Draw = Pen("square")
+    for(x, y) in path: 
+        if(x, y) == start or (x, y) == goal: 
+            continue
+        screen_x = -288 + (x * 24)
+        screen_y = 288 - (y * 24)
 
+        path_Draw.color("green")
+        path_Draw.goto(screen_x, screen_y)
+        path_Draw.stamp()
     
+    corectPathDraw = Pen("circle")
+    for(x, y) in corectPath:
+        if(x, y) == start or (x, y) == goal: 
+            continue
+        screen_x = -288 + (x * 24)
+        screen_y = 288 - (y * 24)
+
+        corectPathDraw.color("yellow")
+        corectPathDraw.goto(screen_x, screen_y)
+        corectPathDraw.stamp()
+
+def drawMazeDFS(maze): 
+    start, goal = None, None
+    for y in range(len(maze)):
+        for x in range(len(maze[0])):
+            if maze[y][x] == 2:
+                start = (x, y)
+            elif maze[y][x] == 3:
+                goal = (x, y)
+
+    corectPath, path = generateDFSPath(maze, start, goal)
+    
+    drawDFS(corectPath, path, start, goal)
