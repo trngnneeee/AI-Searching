@@ -1,7 +1,6 @@
 import turtle 
 import math 
 import time
-
 import maze
 from Pen import Pen 
 from Player import Player

@@ -28,7 +28,7 @@ def generateDFSPath(maze, start, goal):
         return False
         
     dfs(*start) 
-    return correct_path, path[::-1]
+    return correct_path[::-1], path
 
 def drawDFS(corectPath, path, start, goal): 
     path_Draw = Pen("square")
