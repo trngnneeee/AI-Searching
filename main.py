@@ -1,7 +1,5 @@
 import turtle 
 import tkinter as tk
-import math 
-import time
 import maze
 from Pen import Pen 
 from Player import Player
@@ -27,10 +25,14 @@ maze_width = (screen_width // 32) | 1
 maze_height = (screen_height // 32) | 1
 level = maze.generateMaze(maze_height, maze_width)
 
+#Set up the level
+maze.setup_maze(level)
+# DFS.drawMazeDFS(level)
+
 def regenerateMaze():
     global level
     level = maze.generateMaze(maze_height, maze_width)
-    turtle.clearscreen() 
+    turtle.clear()
     turtle.bgcolor("black")
     window.title("My team's maze game!")
 
@@ -44,11 +46,10 @@ gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bo
 
 gen_maze_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=40)
 
+dfs_button = tk.Button(root, text = "DFS", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
 
-
-#Set up the level
-maze.setup_maze(level)
-DFS.drawMazeDFS(level)
+dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
 
 #Turn off screen update
 window.tracer()
