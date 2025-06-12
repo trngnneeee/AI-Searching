@@ -1,4 +1,5 @@
 from Pen import Pen
+from maze import drawPath
 
 def generateDFSPath(maze, start, goal):
     height = len(maze)
@@ -30,29 +31,6 @@ def generateDFSPath(maze, start, goal):
     dfs(*start) 
     return correct_path[::-1], path
 
-def drawDFS(corectPath, path, start, goal): 
-    path_Draw = Pen("square")
-    for(x, y) in path: 
-        if(x, y) == start or (x, y) == goal: 
-            continue
-        screen_x = -288 + (x * 24)
-        screen_y = 288 - (y * 24)
-
-        path_Draw.color("green")
-        path_Draw.goto(screen_x, screen_y)
-        path_Draw.stamp()
-    
-    corectPathDraw = Pen("circle")
-    for(x, y) in corectPath:
-        if(x, y) == start or (x, y) == goal: 
-            continue
-        screen_x = -288 + (x * 24)
-        screen_y = 288 - (y * 24)
-
-        corectPathDraw.color("yellow")
-        corectPathDraw.goto(screen_x, screen_y)
-        corectPathDraw.stamp()
-
 def drawMazeDFS(maze): 
     start, goal = None, None
     for y in range(len(maze)):
@@ -64,4 +42,4 @@ def drawMazeDFS(maze):
 
     corectPath, path = generateDFSPath(maze, start, goal)
     
-    drawDFS(corectPath, path, start, goal)
+    drawPath(corectPath, path, start, goal)

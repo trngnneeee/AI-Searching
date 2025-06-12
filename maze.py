@@ -56,3 +56,26 @@ def setup_maze(maze):
                 pen.color("red")
                 pen.stamp()
                 pen.color("white")
+
+def drawPath(corectPath, path, start, goal): 
+    path_Draw = Pen("square")
+    for(x, y) in path: 
+        if(x, y) == start or (x, y) == goal: 
+            continue
+        screen_x = -288 + (x * 24)
+        screen_y = 288 - (y * 24)
+
+        path_Draw.color("green")
+        path_Draw.goto(screen_x, screen_y)
+        path_Draw.stamp()
+    
+    corectPathDraw = Pen("circle")
+    for(x, y) in corectPath:
+        if(x, y) == start or (x, y) == goal: 
+            continue
+        screen_x = -288 + (x * 24)
+        screen_y = 288 - (y * 24)
+
+        corectPathDraw.color("yellow")
+        corectPathDraw.goto(screen_x, screen_y)
+        corectPathDraw.stamp()
