@@ -42,4 +42,4 @@ def drawMazeDFS(maze):
 
     corectPath, path = generateDFSPath(maze, start, goal)
     
-    drawPath(corectPath, path, start, goal)
+    drawPath(corectPath, path, start, goal, maze)

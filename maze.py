@@ -2,6 +2,14 @@ import random
 from Pen import Pen 
 from Player import Player
 
+TILE_SIZE = 24
+
+#To canh giua
+def calculate_offsets(maze):
+    width_px = len(maze[0]) * TILE_SIZE
+    height_px = len(maze) * TILE_SIZE
+    return -width_px // 2, height_px // 2
+
 def generateMaze(height, width): 
     maze = [[1 for _ in range(width)] for _ in range(height)] 
     directions = [(-2, 0), (2, 0), (0, 2), (0, -2)]
@@ -33,11 +41,13 @@ def setup_maze(maze):
     pen = Pen("square")
     player = Player()
 
-    for y in range(len(maze) - 1):
-        for x in range(len(maze[y]) - 1):
+    offset_x, offset_y = calculate_offsets(maze) 
+    for y in range(len(maze)):
+        for x in range(len(maze[y])):
             value = maze[y][x]
-            screen_x = -288 + (x * 24)
-            screen_y = 288 - (y * 24)
+
+            screen_x = offset_x + (x * TILE_SIZE)
+            screen_y = offset_y - (y * TILE_SIZE)
 
             #wall
             if value == 1:
@@ -57,25 +67,25 @@ def setup_maze(maze):
                 pen.stamp()
                 pen.color("white")
 
-def drawPath(corectPath, path, start, goal): 
-    path_Draw = Pen("square")
-    for(x, y) in path: 
-        if(x, y) == start or (x, y) == goal: 
-            continue
-        screen_x = -288 + (x * 24)
-        screen_y = 288 - (y * 24)
+def drawPath(correctPath, path, start, goal, maze):
+    offset_x, offset_y = calculate_offsets(maze)
 
+    path_Draw = Pen("square")
+    for (x, y) in path:
+        if (x, y) == start or (x, y) == goal:
+            continue
+        screen_x = offset_x + (x * TILE_SIZE)
+        screen_y = offset_y - (y * TILE_SIZE)
         path_Draw.color("green")
         path_Draw.goto(screen_x, screen_y)
         path_Draw.stamp()
-    
-    corectPathDraw = Pen("circle")
-    for(x, y) in corectPath:
-        if(x, y) == start or (x, y) == goal: 
-            continue
-        screen_x = -288 + (x * 24)
-        screen_y = 288 - (y * 24)
 
-        corectPathDraw.color("yellow")
-        corectPathDraw.goto(screen_x, screen_y)
-        corectPathDraw.stamp()
+    correctPathDraw = Pen("circle")
+    for (x, y) in correctPath:
+        if (x, y) == start or (x, y) == goal:
+            continue
+        screen_x = offset_x + (x * TILE_SIZE)
+        screen_y = offset_y - (y * TILE_SIZE)
+        correctPathDraw.color("yellow")
+        correctPathDraw.goto(screen_x, screen_y)
+        correctPathDraw.stamp()

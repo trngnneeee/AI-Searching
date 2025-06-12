@@ -1,4 +1,5 @@
 import turtle 
+import tkinter
 import math 
 import time
 import maze
@@ -9,27 +10,25 @@ import DFS
 window = turtle.Screen()
 window.bgcolor("black")
 window.title ("My team's maze game!")
-window.setup(700, 700)
+window._root.attributes("-fullscreen", True)
 
-#Register shapes
-# turtle.register_shape("img/goku_right.gif")
-# turtle.register_shape("img/goku_left.gif")
-# turtle.register_shape("img/treasure.gif")
-# turtle.register_shape("img/wall.gif")
+def exit_fullscreen():
+    window._root.attributes("-fullscreen", False)
+
+window.listen()
+window.onkey(exit_fullscreen, "Escape")
         
 #Gen Maze
-level = maze.generateMaze(20, 20)
+screen_width = window._root.winfo_screenwidth()
+screen_height = window._root.winfo_screenheight()
+
+maze_width = (screen_width // 32) | 1
+maze_height = (screen_height // 32) | 1
+level = maze.generateMaze(maze_height, maze_width)
 
 #Set up the level
 maze.setup_maze(level)
 DFS.drawMazeDFS(level)
-
-#Keyboard Binding
-# turtle.listen()
-# turtle.onkey(player.go_up, "Up")
-# turtle.onkey(player.go_down, "Down")
-# turtle.onkey(player.go_left, "Left")
-# turtle.onkey(player.go_right, "Right")
 
 #Turn off screen update
 window.tracer()
