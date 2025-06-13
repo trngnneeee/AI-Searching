@@ -22,36 +22,36 @@ def generateAStarPath(maze, start, goal):
   visited_path = []  
 
   while open_set:
-    current_f, current = heapq.heappop(open_set)
-    x, y = current
-    visited_path.append(current)
+        current_f, current = heapq.heappop(open_set)
+        x, y = current
+        visited_path.append(current)
 
-    if current == goal:
-        # Truy vết đường đi từ goal về start
-        path = []
-        while current in came_from:
-            path.append(current)
-            current = came_from[current]
-        path.append(start)
-        return path[::-1], visited_path
+        if current == goal:
+            # Truy vết đường đi từ goal về start
+            path = []
+            while current in came_from:
+                path.append(current)
+                current = came_from[current]
+            path.append(start)
+            return path[::-1], visited_path
 
-    for dx, dy in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
-        nx, ny = x + dx, y + dy
+        for dx, dy in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
+            nx, ny = x + dx, y + dy
 
-        if not (0 <= nx < width and 0 <= ny < height):
-            continue
-        if maze[ny][nx] == 1:
-            continue
+            if not (0 <= nx < width and 0 <= ny < height):
+                continue
+            if maze[ny][nx] == 1:
+                continue
 
-        tentative_g_score = g_score[y][x] + 1  # Chi phí di chuyển giữa các ô là 1
+            tentative_g_score = g_score[y][x] + 1  # Chi phí di chuyển giữa các ô là 1
 
-        if tentative_g_score < g_score[ny][nx]:
-            came_from[(nx, ny)] = (x, y)
-            g_score[ny][nx] = tentative_g_score
-            f_score[ny][nx] = tentative_g_score + heuristic((nx, ny), goal)
-            heapq.heappush(open_set, (f_score[ny][nx], (nx, ny)))
+            if tentative_g_score < g_score[ny][nx]:
+                came_from[(nx, ny)] = (x, y)
+                g_score[ny][nx] = tentative_g_score
+                f_score[ny][nx] = tentative_g_score + heuristic((nx, ny), goal)
+                heapq.heappush(open_set, (f_score[ny][nx], (nx, ny)))
 
-    return [], visited_path
+        return [], visited_path
   
 def drawMazeAStar(maze):
     start, goal = None, None
