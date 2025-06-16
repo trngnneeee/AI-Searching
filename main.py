@@ -4,6 +4,7 @@ import maze
 from Pen import Pen 
 from Player import Player
 import DFS
+import aStar
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -58,7 +59,7 @@ dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
 
 #A star Button
 dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
+                        bg="red", fg="white", command=lambda : aStar.drawMazeAStar(level))
 dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 
 #Turn off screen update
