@@ -4,7 +4,11 @@ import maze
 from Pen import Pen 
 from Player import Player
 import DFS
+<<<<<<< HEAD
 import aStar
+=======
+import DIJKSTRA
+>>>>>>> 19cdbb5cce2f82d750ea7167a336ca63fbc11134
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -61,6 +65,11 @@ dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
 dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : aStar.drawMazeAStar(level))
 dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
+
+#DIJKSTRA Button
+dfs_button = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
+dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
 
 #Turn off screen update
 window.tracer()
