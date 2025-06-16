@@ -46,6 +46,12 @@ gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bo
 
 gen_maze_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=40)
 
+#Clear button
+clear_button = tk.Button(root, text="Clear", font=("Arial", 20),
+                         bg="gray", fg="white", command=maze.clearPath)
+clear_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=110)
+
+#DFS button
 dfs_button = tk.Button(root, text = "DFS", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
 

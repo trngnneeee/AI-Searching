@@ -67,7 +67,12 @@ def setup_maze(maze):
                 pen.stamp()
                 pen.color("white")
 
+path_Draw = None
+correctPathDraw = None
+
 def drawPath(correctPath, path, start, goal, maze):
+    global path_Draw, correctPathDraw
+
     offset_x, offset_y = calculate_offsets(maze)
 
     path_Draw = Pen("square")
@@ -89,3 +94,12 @@ def drawPath(correctPath, path, start, goal, maze):
         correctPathDraw.color("yellow")
         correctPathDraw.goto(screen_x, screen_y)
         correctPathDraw.stamp()
+
+def clearPath():
+    global path_Draw, correctPathDraw
+    if path_Draw:
+        path_Draw.clear()
+        path_Draw.hideturtle()
+    if correctPathDraw:
+        correctPathDraw.clear()
+        correctPathDraw.hideturtle()
