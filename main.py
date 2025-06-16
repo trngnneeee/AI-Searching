@@ -61,6 +61,11 @@ dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
 dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 
+#DIJKSTRA Button
+dfs_button = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
+dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
+
 #Turn off screen update
 window.tracer()
 #Main game loop
