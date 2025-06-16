@@ -4,6 +4,7 @@ import maze
 from Pen import Pen 
 from Player import Player
 import DFS
+import DIJKSTRA
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -63,7 +64,7 @@ dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 
 #DIJKSTRA Button
 dfs_button = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
+                        bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
 dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
 
 #Turn off screen update
