@@ -4,11 +4,9 @@ import maze
 from Pen import Pen 
 from Player import Player
 import DFS
-<<<<<<< HEAD
 import aStar
-=======
 import DIJKSTRA
->>>>>>> 19cdbb5cce2f82d750ea7167a336ca63fbc11134
+import BFS
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -43,7 +41,6 @@ def regenerateMaze():
 
     maze.setup_maze(level)
     DFS.drawMazeDFS(level)
-
 #button
 #gen map button
 gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bold"),
@@ -70,6 +67,11 @@ dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 dfs_button = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
 dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
+
+#BFS Button
+dfs_button = tk.Button(root, text = "BFS", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : BFS.drawMazeBFS(level))
+dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 600, y = 40)
 
 #Turn off screen update
 window.tracer()
