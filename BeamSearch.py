@@ -6,7 +6,7 @@ def heuristic(a, b):
     # Khoảng cách Manhattan
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-def generateBeamPath(maze, start, goal, beam_width=3):
+def generateBeamSearchPath(maze, start, goal, beam_width=3):
     height = len(maze)
     width = len(maze[0])
     
@@ -43,7 +43,7 @@ def generateBeamPath(maze, start, goal, beam_width=3):
 
     return correct_path, path
 
-def drawMazeBeam(maze):
+def drawMazeBeamSearch(maze):
     start, goal = None, None
     for y in range(len(maze)):
         for x in range(len(maze[0])):
@@ -52,6 +52,6 @@ def drawMazeBeam(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    correctPath, path = generateBeamPath(maze, start, goal, beam_width=3)
+    correctPath, path = generateBeamSearchPath(maze, start, goal, beam_width=3)
     
     drawPath(correctPath, path, start, goal, maze)
