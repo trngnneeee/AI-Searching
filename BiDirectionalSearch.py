@@ -2,7 +2,7 @@ from Pen import Pen
 from maze import drawPath
 from collections import deque
 
-def generateBiDirPath(maze, start, goal):
+def generateBiDirectionalSearch(maze, start, goal):
     height = len(maze)
     width = len(maze[0])
 
@@ -72,7 +72,7 @@ def generateBiDirPath(maze, start, goal):
 
     return correct_path, path
 
-def drawMazeBiDir(maze):
+def drawMazeBiDirectionalSearch(maze):
     start, goal = None, None
     for y in range(len(maze)):
         for x in range(len(maze[0])):
@@ -81,6 +81,6 @@ def drawMazeBiDir(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    correctPath, path = generateBiDirPath(maze, start, goal)
+    correctPath, path = generateBiDirectionalSearch(maze, start, goal)
     
     drawPath(correctPath, path, start, goal, maze)

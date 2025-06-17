@@ -9,6 +9,7 @@ import DIJKSTRA
 import BFS
 import IDAStar
 import BeamSearch
+import BiDirectionalSearch
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -85,6 +86,12 @@ dfs_buttonIDAStar.place(relx=0.0, rely=0.0, anchor="nw", x = 740, y = 40)
 dfs_buttonBeamSearch = tk.Button(root, text = "BeamSearch", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : BeamSearch.drawMazeBeamSearch(level))
 dfs_buttonBeamSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 940, y = 40)
+
+#BiDirectionalSearch Button
+dfs_buttonBiDirectionalSearch = tk.Button(root, text = "BiDirectionalSearch", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : BiDirectionalSearch.drawMazeBiDirectionalSearch(level))
+dfs_buttonBiDirectionalSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 60, y = 750)
+
 
 
 #Turn off screen update
