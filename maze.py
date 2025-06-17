@@ -100,6 +100,8 @@ def clearPath():
     if path_Draw:
         path_Draw.clear()
         path_Draw.hideturtle()
+        path_Draw = None
     if correctPathDraw:
         correctPathDraw.clear()
         correctPathDraw.hideturtle()
+        correctPathDraw = None

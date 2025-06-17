@@ -44,6 +44,7 @@ def regenerateMaze():
 
     maze.setup_maze(level)
     DFS.drawMazeDFS(level)
+    
 #button
 #gen map button
 gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bold"),
