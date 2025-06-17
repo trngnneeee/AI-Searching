@@ -7,9 +7,10 @@ import DFS
 import aStar
 import DIJKSTRA
 import BFS
-import IDAStar
+import IDAstar
 import BeamSearch
 import BiDirectionalSearch
+import IDDFS
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -34,22 +35,20 @@ level = maze.generateMaze(maze_height, maze_width)
 #Set up the level
 maze.setup_maze(level)
 # DFS.drawMazeDFS(level)
-
 def regenerateMaze():
     global level
+    level.clear()
+    maze.clearPath()  # Xóa đường đi cũ
+    
     level = maze.generateMaze(maze_height, maze_width)
-    turtle.clear()
-    turtle.bgcolor("black")
-    window.title("My team's maze game!")
-
+    # Không dùng turtle.clear() mà chỉ vẽ lại maze
     maze.setup_maze(level)
-    DFS.drawMazeDFS(level)
-#button
-#gen map button
-gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : regenerateMaze())
-
+    DFS.drawMazeDFS(level)  # Vẽ maze mới với DFS
+# Các button không thay đổi
+gen_maze_button = tk.Button(root, text="Generate maze", font=("Arial", 24, "bold"),
+                            bg="red", fg="white", command=regenerateMaze)
 gen_maze_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=40)
+
 
 #Clear button
 clear_buttonClear = tk.Button(root, text="Clear", font=("Arial", 20),
@@ -79,7 +78,7 @@ dfs_buttonBFS.place(relx=0.0, rely=0.0, anchor="nw", x = 600, y = 40)
 
 #IDAstar Button
 dfs_buttonIDAStar = tk.Button(root, text = "IDAStar", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : IDAStar.drawMazeIDAStar(level))
+                        bg="red", fg="white", command=lambda : IDAstar.drawMazeIDAStar(level))
 dfs_buttonIDAStar.place(relx=0.0, rely=0.0, anchor="nw", x = 740, y = 40)
 
 #BeamSearch Button
@@ -91,6 +90,11 @@ dfs_buttonBeamSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 940, y = 40)
 dfs_buttonBiDirectionalSearch = tk.Button(root, text = "BiDirectionalSearch", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : BiDirectionalSearch.drawMazeBiDirectionalSearch(level))
 dfs_buttonBiDirectionalSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 60, y = 750)
+#IDDFS Button
+dfs_buttonIDDFS = tk.Button(root, text = "IDDFS", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : IDDFS.drawMazeIDDFS(level))
+dfs_buttonIDDFS.place(relx=0.0, rely=0.0, anchor="nw", x = 500, y = 750)
+
 
 
 
