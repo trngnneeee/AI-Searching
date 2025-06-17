@@ -70,8 +70,4 @@ def drawMazeAStar(maze):
 
     correct_path, path = generateAStarPath(maze, start, goal)
 
-    print("Start:", start)
-    print("Goal:", goal)
-    print("Path found:", correct_path)
-
     drawPath(correct_path, path, start, goal, maze)

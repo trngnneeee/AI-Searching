@@ -2,14 +2,14 @@ import turtle
 import tkinter as tk
 import maze
 from Pen import Pen 
-from Player import Player
 import DFS
 import aStar
 import DIJKSTRA
 import BFS
-import IDAStar
+import IDAstar
 import BeamSearch
 import BiDirectionalSearch
+import IDDFS
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -34,66 +34,41 @@ level = maze.generateMaze(maze_height, maze_width)
 #Set up the level
 maze.setup_maze(level)
 # DFS.drawMazeDFS(level)
-
 def regenerateMaze():
     global level
+    level.clear()
+    maze.clearPath()  # Xóa đường đi cũ
+    
     level = maze.generateMaze(maze_height, maze_width)
-    turtle.clear()
-    turtle.bgcolor("black")
-    window.title("My team's maze game!")
-
+    # Không dùng turtle.clear() mà chỉ vẽ lại maze
     maze.setup_maze(level)
     DFS.drawMazeDFS(level)
-    
-#button
-#gen map button
-gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : regenerateMaze())
+# Danh sách các nút thuật toán và thông tin liên quan
+button_specs = [
+    # (text, command function, x, y)
+    ("Generate maze", lambda: regenerateMaze(), 1.0, 0.0, "ne", -40, 40),
+    ("Clear", lambda: maze.clearPath(), 1.0, 0.0, "ne", -40, 110),
+    ("DFS", lambda: DFS.drawMazeDFS(level), 0.0, 0.0, "nw", 60, 40),
+    ("A Star", lambda: aStar.drawMazeAStar(level), 0.0, 0.0, "nw", 200, 40),
+    ("DIJKSTRA", lambda: DIJKSTRA.drawMazeDijkstra(level), 0.0, 0.0, "nw", 370, 40),
+    ("BFS", lambda: BFS.drawMazeBFS(level), 0.0, 0.0, "nw", 600, 40),
+    ("IDAStar", lambda: IDAstar.drawMazeIDAStar(level), 0.0, 0.0, "nw", 740, 40),
+    ("BeamSearch", lambda: BeamSearch.drawMazeBeamSearch(level), 0.0, 0.0, "nw", 940, 40),
+    ("BiDirectionalSearch", lambda: BiDirectionalSearch.drawMazeBiDirectionalSearch(level), 0.0, 0.0, "nw", 60, 750),
+    ("IDDFS", lambda: IDDFS.drawMazeIDDFS(level), 0.0, 0.0, "nw", 500, 750),
+]
 
-gen_maze_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=40)
+# Tạo và đặt nút dựa trên cấu hình trên
+all_buttons = []
+for text, cmd, relx, rely, anchor, x, y in button_specs:
+    btn = tk.Button(root, text=text, font=("Arial", 24, "bold"),
+                    bg="red" if text != "Clear" else "gray",
+                    fg="white", command=cmd)
+    btn.place(relx=relx, rely=rely, anchor=anchor, x=x, y=y)
+    all_buttons.append(btn)
 
-#Clear button
-clear_buttonClear = tk.Button(root, text="Clear", font=("Arial", 20),
-                         bg="gray", fg="white", command=maze.clearPath)
-clear_buttonClear.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=110)
-
-#DFS Button
-dfs_buttonDFS = tk.Button(root, text = "DFS", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
-dfs_buttonDFS.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
-
-#A star Button
-dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : aStar.drawMazeAStar(level))
-dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
-
-#DIJKSTRA Button
-dfs_buttonDIJKSTRA = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
-dfs_buttonDIJKSTRA.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
-
-
-#BFS Button
-dfs_buttonBFS = tk.Button(root, text = "BFS", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : BFS.drawMazeBFS(level))
-dfs_buttonBFS.place(relx=0.0, rely=0.0, anchor="nw", x = 600, y = 40)
-
-#IDAstar Button
-dfs_buttonIDAStar = tk.Button(root, text = "IDAStar", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : IDAStar.drawMazeIDAStar(level))
-dfs_buttonIDAStar.place(relx=0.0, rely=0.0, anchor="nw", x = 740, y = 40)
-
-#BeamSearch Button
-dfs_buttonBeamSearch = tk.Button(root, text = "BeamSearch", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : BeamSearch.drawMazeBeamSearch(level))
-dfs_buttonBeamSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 940, y = 40)
-
-#BiDirectionalSearch Button
-dfs_buttonBiDirectionalSearch = tk.Button(root, text = "BiDirectionalSearch", font=("Arial", 24, "bold"),
-                        bg="red", fg="white", command=lambda : BiDirectionalSearch.drawMazeBiDirectionalSearch(level))
-dfs_buttonBiDirectionalSearch.place(relx=0.0, rely=0.0, anchor="nw", x = 60, y = 750)
-
-
+# Đăng ký danh sách nút để maze có thể disable chúng
+maze.register_buttons(all_buttons)
 
 #Turn off screen update
 window.tracer()
