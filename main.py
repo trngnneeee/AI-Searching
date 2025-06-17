@@ -49,14 +49,14 @@ gen_maze_button = tk.Button(root, text = "Generate maze", font=("Arial", 24, "bo
 gen_maze_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=40)
 
 #Clear button
-clear_button = tk.Button(root, text="Clear", font=("Arial", 20),
+clear_buttonClear = tk.Button(root, text="Clear", font=("Arial", 20),
                          bg="gray", fg="white", command=maze.clearPath)
-clear_button.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=110)
+clear_buttonClear.place(relx=1.0, rely=0.0, anchor="ne", x=-40, y=110)
 
 #DFS Button
-dfs_button = tk.Button(root, text = "DFS", font=("Arial", 24, "bold"),
+dfs_buttonDFS = tk.Button(root, text = "DFS", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DFS.drawMazeDFS(level))
-dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
+dfs_buttonDFS.place(relx=0.0, rely=0.0, anchor="nw", x=60, y=40)
 
 #A star Button
 dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
@@ -64,14 +64,14 @@ dfs_buttonAStar = tk.Button(root, text = "A Star", font=("Arial", 24, "bold"),
 dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 
 #DIJKSTRA Button
-dfs_button = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
+dfs_buttonDIJKSTRA = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
-dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
+dfs_buttonDIJKSTRA.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
 
 #BFS Button
-dfs_button = tk.Button(root, text = "BFS", font=("Arial", 24, "bold"),
+dfs_buttonBFS = tk.Button(root, text = "BFS", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : BFS.drawMazeBFS(level))
-dfs_button.place(relx=0.0, rely=0.0, anchor="nw", x = 600, y = 40)
+dfs_buttonBFS.place(relx=0.0, rely=0.0, anchor="nw", x = 600, y = 40)
 
 #Turn off screen update
 window.tracer()

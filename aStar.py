@@ -6,28 +6,31 @@ def heuristic(a, b):
   return abs((a[0] - b[0])) + abs(a[1] - b[1])
 
 def generateAStarPath(maze, start, goal):
-  height = len(maze)
-  width = len(maze[0])
+    height = len(maze)
+    width = len(maze[0])
 
-  open_set = []
-  heapq.heappush(open_set, (0, start))  # (f_score, (x, y))
+    open_set = []
+    in_open_set = set()
+    heapq.heappush(open_set, (0, start))  # (f_score, (x, y))
+    in_open_set.add(start)
 
-  came_from = {}  # để truy vết đường đi
-  g_score = [[float('inf')] * width for _ in range(height)]
-  g_score[start[1]][start[0]] = 0
+    came_from = {}
+    g_score = [[float('inf')] * width for _ in range(height)]
+    g_score[start[1]][start[0]] = 0
 
-  f_score = [[float('inf')] * width for _ in range(height)]
-  f_score[start[1]][start[0]] = heuristic(start, goal)
+    f_score = [[float('inf')] * width for _ in range(height)]
+    f_score[start[1]][start[0]] = heuristic(start, goal)
 
-  visited_path = []  
+    visited_path = []
 
-  while open_set:
+    while open_set:
         current_f, current = heapq.heappop(open_set)
+        in_open_set.remove(current)
+
         x, y = current
         visited_path.append(current)
 
         if current == goal:
-            # Truy vết đường đi từ goal về start
             path = []
             while current in came_from:
                 path.append(current)
@@ -43,15 +46,18 @@ def generateAStarPath(maze, start, goal):
             if maze[ny][nx] == 1:
                 continue
 
-            tentative_g_score = g_score[y][x] + 1  # Chi phí di chuyển giữa các ô là 1
+            tentative_g_score = g_score[y][x] + 1
 
             if tentative_g_score < g_score[ny][nx]:
                 came_from[(nx, ny)] = (x, y)
                 g_score[ny][nx] = tentative_g_score
                 f_score[ny][nx] = tentative_g_score + heuristic((nx, ny), goal)
-                heapq.heappush(open_set, (f_score[ny][nx], (nx, ny)))
+                if (nx, ny) not in in_open_set:
+                    heapq.heappush(open_set, (f_score[ny][nx], (nx, ny)))
+                    in_open_set.add((nx, ny))
 
-        return [], visited_path
+    return [], visited_path
+
   
 def drawMazeAStar(maze):
     start, goal = None, None
@@ -63,5 +69,9 @@ def drawMazeAStar(maze):
                 goal = (x, y)
 
     correct_path, path = generateAStarPath(maze, start, goal)
+
+    print("Start:", start)
+    print("Goal:", goal)
+    print("Path found:", correct_path)
 
     drawPath(correct_path, path, start, goal, maze)
