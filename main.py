@@ -7,6 +7,7 @@ import DFS
 import aStar
 import DIJKSTRA
 import BFS
+import IDAStar
 
 window = turtle.Screen()
 window.bgcolor("black")
@@ -67,6 +68,11 @@ dfs_buttonAStar.place(relx=0.0, rely=0.0, anchor="nw", x=200, y=40)
 dfs_buttonDIJKSTRA = tk.Button(root, text = "DIJKSTRA", font=("Arial", 24, "bold"),
                         bg="red", fg="white", command=lambda : DIJKSTRA.drawMazeDijkstra(level))
 dfs_buttonDIJKSTRA.place(relx=0.0, rely=0.0, anchor="nw", x = 370, y = 40)
+
+#IDAstar Button
+dfs_buttonIDAStar = tk.Button(root, text = "IDAStar", font=("Arial", 24, "bold"),
+                        bg="red", fg="white", command=lambda : IDAStar.drawMazeIDAStar(level))
+dfs_buttonIDAStar.place(relx=0.0, rely=0.0, anchor="nw", x = 740, y = 40)
 
 #BFS Button
 dfs_buttonBFS = tk.Button(root, text = "BFS", font=("Arial", 24, "bold"),
