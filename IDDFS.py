@@ -1,3 +1,4 @@
+import time
 from Pen import Pen
 from maze import drawPath
 
@@ -66,6 +67,9 @@ def drawMazeIDDFS(maze):
                 goal = (x, y)
 
     max_depth = 20  # Giới hạn độ sâu tối đa, có thể điều chỉnh
-    correctPath, allSteps = generateIDDFSPath(maze, start, goal, max_depth)
     
-    drawPath(correctPath, allSteps, start, goal, maze) 
+    t0 = time.time()
+    correctPath, path = generateIDDFSPath(maze, start, goal)
+    t1 = time.time()
+    
+    drawPath(correctPath, path, start, goal, maze) 

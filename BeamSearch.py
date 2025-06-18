@@ -1,3 +1,4 @@
+import time
 from Pen import Pen
 from maze import drawPath
 import heapq
@@ -52,6 +53,8 @@ def drawMazeBeamSearch(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    correctPath, path = generateBeamSearchPath(maze, start, goal, beam_width=3)
+    t0 = time.time()
+    correctPath, path = generateBeamSearchPath(maze, start, goal)
+    t1 = time.time()
     
     drawPath(correctPath, path, start, goal, maze)

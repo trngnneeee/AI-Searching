@@ -1,3 +1,4 @@
+import time
 from Pen import Pen
 from maze import drawPath
 import heapq
@@ -56,6 +57,8 @@ def drawMazeDijkstra(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
+    t0 = time.time()
     correctPath, path = generateDijkstraPath(maze, start, goal)
+    t1 = time.time()
 
     drawPath(correctPath, path, start, goal, maze)

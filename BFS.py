@@ -1,4 +1,5 @@
 # This is Breadth-first search algorithm implementation for maze solving.
+import time
 from Pen import Pen
 from maze import drawPath
 import queue
@@ -59,5 +60,8 @@ def drawMazeBFS(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    corectPath, path = generateBFSPath(maze, start, goal)
-    drawPath(corectPath, path, start, goal, maze)
+    t0 = time.time()
+    correctPath, path = generateBFSPath(maze, start, goal)
+    t1 = time.time()
+
+    drawPath(correctPath, path, start, goal, maze)

@@ -1,3 +1,4 @@
+import time
 from Pen import Pen
 from maze import drawPath
 
@@ -40,6 +41,8 @@ def drawMazeDFS(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    corectPath, path = generateDFSPath(maze, start, goal)
+    t0 = time.time()
+    correctPath, path = generateDFSPath(maze, start, goal)
+    t1 = time.time()
     
-    drawPath(corectPath, path, start, goal, maze)
+    drawPath(correctPath, path, start, goal, maze)
