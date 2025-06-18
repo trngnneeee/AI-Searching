@@ -75,5 +75,3 @@ window.tracer()
 #Main game loop
 while True:
     window.update()
-
-
