@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 
-import { runDFS, runBFS } from "@/app/helpers/algorithm.helper";
+import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar } from "@/app/helpers/algorithm.helper";
 
 export default function GamePage() {
   const router = useRouter();
@@ -132,6 +132,120 @@ export default function GamePage() {
           }
           break;
         }
+      case "A*": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runAStar(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+      case "ucs": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runUCS(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+      case "iddfs": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runIDDFS(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+      case "bids": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runBi_Directional_Search(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+      case "bs": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runBeamSearch(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+      case "idastar": 
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const path = await runIDAStar(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
     }
   }
 
@@ -153,12 +267,12 @@ export default function GamePage() {
                 <option value={""}>-- ALGORITHMS --</option>
                 <option value={"dfs"}>DFS</option>
                 <option value={"bfs"}>BFS</option>
-                <option value={""}>A*</option>
-                <option value={""}>UCS</option>
-                <option value={""}>IDDFS</option>
-                <option value={""}>BI_DIRECTIONAL SEARCH</option>
-                <option value={""}>BEAM SEARCH</option>
-                <option value={""}>IDA*</option>
+                <option value={"A*"}>A*</option>
+                <option value={"ucs"}>UCS</option>
+                <option value={"iddfs"}>IDDFS</option>
+                <option value={"bids"}>BI_DIRECTIONAL SEARCH</option>
+                <option value={"bs"}>BEAM SEARCH</option>
+                <option value={"idastar"}>IDA*</option>
               </select>
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
