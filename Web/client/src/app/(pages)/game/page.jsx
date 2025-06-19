@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { IoMdArrowBack } from "react-icons/io";
 
 import { runDFS, runBFS } from "@/app/helpers/algorithm.helper";
 
@@ -42,7 +43,7 @@ export default function GamePage() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         if (matrix[i][j] === 1 && Math.random() < 0.4) {
-          matrix[i][j] = 0; 
+          matrix[i][j] = 0;
         }
       }
     }
@@ -72,6 +73,14 @@ export default function GamePage() {
     }
   }
 
+  function resetMatrixStates(matrix) {
+    return matrix.map(row =>
+      row.map(cell =>
+        (cell !== 0 && cell !== 1 && cell !== 2 && cell !== 3) ? 0 : cell
+      )
+    );
+  }
+
   const handlePlay = async () => {
     const isAllZero = matrix.every(row => row.every(cell => cell === 0));
     if (isAllZero) {
@@ -87,7 +96,8 @@ export default function GamePage() {
     switch (alg) {
       case "dfs":
         {
-          const newMatrix = matrix.map(row => [...row]);
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
 
           const path = await runDFS(matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
@@ -105,7 +115,8 @@ export default function GamePage() {
         }
       case "bfs":
         {
-          const newMatrix = matrix.map(row => [...row]);
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
 
           const path = await runBFS(matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
@@ -129,6 +140,10 @@ export default function GamePage() {
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex justify-between pt-[50px] px-[100px]">
           <div>
+            <button href="/" className="mb-[50px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
+              <IoMdArrowBack />
+              <div>HOME</div>
+            </button>
             <div className="px-[40px] py-[50px] bg-[#001835] border-[3px] border-[#056092] rounded-[30px] flex flex-col gap-[30px] w-[400px]">
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
