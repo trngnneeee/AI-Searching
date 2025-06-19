@@ -1,9 +1,9 @@
 export async function runDFS(matrix, start, goal, onVisit, delay = 10) {
   const rows = matrix.length;
   const cols = matrix[0].length;
-  const visited = Array.from({ length: rows }, () =>
-    Array(cols).fill(false)
-  );
+
+  const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+  const parent = Array.from({ length: rows }, () => Array(cols).fill(null));
 
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -35,10 +35,25 @@ export async function runDFS(matrix, start, goal, onVisit, delay = 10) {
       return path;
     }
 
-    stack.push([r + 1, c]);
-    stack.push([r - 1, c]);
-    stack.push([r, c + 1]);
-    stack.push([r, c - 1]);
+    const neighbors = [
+      [r + 1, c],
+      [r - 1, c],
+      [r, c + 1],
+      [r, c - 1],
+    ];
+
+    for (const [nr, nc] of neighbors) {
+      if (
+        nr >= 0 && nr < rows &&
+        nc >= 0 && nc < cols &&
+        !visited[nr][nc] &&
+        matrix[nr][nc] !== 1 &&
+        parent[nr][nc] === null
+      ) {
+        parent[nr][nc] = [r, c];
+        stack.push([nr, nc]);
+      }
+    }
   }
 
   return null;
@@ -72,7 +87,7 @@ export async function runBFS(matrix, start, goal, onVisit, delay = 10) {
       }
       path.reverse();
 
-      return path; 
+      return path;
     }
 
     const directions = [

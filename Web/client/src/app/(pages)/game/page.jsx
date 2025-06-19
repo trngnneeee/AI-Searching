@@ -14,29 +14,45 @@ export default function GamePage() {
   const [start, setStart] = useState(null);
   const [goal, setGoal] = useState(null);
 
+  function generateWalkableMatrix(size = 25) {
+    const matrix = Array.from({ length: size }, () => Array(size).fill(1));
+
+    const start = [0, Math.floor(Math.random() * size)];
+    const goal = [size - 1, Math.floor(Math.random() * size)];
+    setStart(start);
+    setGoal(goal);
+
+    let [r, c] = start;
+    matrix[r][c] = 2;
+
+    while (r !== goal[0] || c !== goal[1]) {
+      if (r < goal[0]) r++;
+      else if (r > goal[0]) r--;
+
+      matrix[r][c] = 0;
+
+      if (c < goal[1]) c++;
+      else if (c > goal[1]) c--;
+
+      matrix[r][c] = 0;
+    }
+
+    matrix[goal[0]][goal[1]] = 3;
+
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        if (matrix[i][j] === 1 && Math.random() < 0.4) {
+          matrix[i][j] = 0; 
+        }
+      }
+    }
+
+    return matrix;
+  }
+
 
   const handleGenerate = () => {
-    const newMatrix = Array.from({ length: 25 }, () =>
-      Array.from({ length: 25 }, () => Math.random() < 0.5 ? 0 : 1)
-    );
-
-    const totalCells = 25 * 25;
-
-    const first = Math.floor(Math.random() * totalCells);
-    let second;
-    do {
-      second = Math.floor(Math.random() * totalCells);
-    } while (second === first);
-
-    const [r1, c1] = [Math.floor(first / 25), first % 25];
-    const [r2, c2] = [Math.floor(second / 25), second % 25];
-
-    newMatrix[r1][c1] = 2;
-    newMatrix[r2][c2] = 3;
-
-    setStart([r1, c1]);
-    setGoal([r2, c2]);
-
+    const newMatrix = generateWalkableMatrix();
     setMatrix(newMatrix);
   }
 
@@ -49,7 +65,7 @@ export default function GamePage() {
   const drawPath = async (path, newMatrix) => {
     for (const [r, c] of path) {
       if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-        newMatrix[r][c] = 5; 
+        newMatrix[r][c] = 5;
         setMatrix([...newMatrix]);
         await new Promise(res => setTimeout(res, 20));
       }
@@ -82,7 +98,7 @@ export default function GamePage() {
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
-          else{
+          else {
             drawPath(path, newMatrix)
           }
           break;

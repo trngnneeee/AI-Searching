@@ -1,19 +1,23 @@
 import turtle 
 import tkinter as tk
-import maze
+import flask as fk 
+import maze 
 from Pen import Pen 
-import DFS
-import aStar
-import DIJKSTRA
-import BFS
-import IDAstar
-import BeamSearch
-import BiDirectionalSearch
-import IDDFS
+from algorithms import DFS
+from algorithms import aStar
+from algorithms import DIJKSTRA
+from algorithms import BFS
+from algorithms import IDAstar
+from algorithms import BeamSearch
+from algorithms import BiDirectionalSearch
+from algorithms import IDDFS
 
 window = turtle.Screen()
 window.bgcolor("black")
 window.title ("My team's maze game!")
+
+app = fk.Flask(__name__)
+
 window._root.attributes("-fullscreen", True)
 def exit_fullscreen():
     window._root.attributes("-fullscreen", False)
@@ -28,7 +32,13 @@ def measure_time(func, *args, **kwargs):
     start = time.time()
     func(*args, **kwargs)
     end = time.time()
-    print(f"Thời gian chạy: {end - start:.4f} giây")
+    return start, end
+
+@app.route("/game")
+def sendTime():
+    start = 5 
+    end = 2
+    return fk.jsonify({start, end})
 
 #Gen Maze
 screen_width = window._root.winfo_screenwidth()
@@ -47,7 +57,6 @@ def regenerateMaze():
     maze.clearPath()  # Xóa đường đi cũ
     
     level = maze.generateMaze(maze_height, maze_width)
-    # Không dùng turtle.clear() mà chỉ vẽ lại maze
     maze.setup_maze(level)
     DFS.drawMazeDFS(level)
 # Danh sách các nút thuật toán và thông tin liên quan
@@ -65,7 +74,6 @@ button_specs = [
     ("IDDFS", lambda: measure_time(IDDFS.drawMazeIDDFS, level), 0.0, 0.0, "nw", 500, 750),
 ]
 
-# Tạo và đặt nút dựa trên cấu hình trên
 all_buttons = []
 for text, cmd, relx, rely, anchor, x, y in button_specs:
     btn = tk.Button(root, text=text, font=("Arial", 24, "bold"),
@@ -74,7 +82,6 @@ for text, cmd, relx, rely, anchor, x, y in button_specs:
     btn.place(relx=relx, rely=rely, anchor=anchor, x=x, y=y)
     all_buttons.append(btn)
 
-# Đăng ký danh sách nút để maze có thể disable chúng
 maze.register_buttons(all_buttons)
 
 #Turn off screen update
@@ -82,3 +89,5 @@ window.tracer()
 #Main game loop
 while True:
     window.update()
+    # if __name__ == "__main__": 
+    #     app.run()
