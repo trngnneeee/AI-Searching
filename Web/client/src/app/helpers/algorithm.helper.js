@@ -1,5 +1,3 @@
-const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
-
 export async function runDFS(matrix, start, goal, onVisit, delay = 10) {
   const rows = matrix.length;
   const cols = matrix[0].length;
@@ -576,4 +574,29 @@ export async function runIDAStar(matrix, start, goal, onVisit, delay = 10) {
   return null;
 }
 
+export async function measurePath(algorithmFn, matrix, start, goal, onVisit, delay = 10, ...args) {
+  const stats = {
+    nodesExplored: 0,
+    pathLength: 0,
+    cost: 0,
+    timeMs: 0,
+  };
 
+  const wrappedVisit = (r, c) => {
+    stats.nodesExplored++;
+    onVisit?.(r, c);
+  };
+
+  const startTime = performance.now();
+  const path = await algorithmFn(matrix, start, goal, wrappedVisit, delay, ...args);
+  const endTime = performance.now();
+
+  if (path) {
+    stats.pathLength = path.length;
+    stats.cost = path.length;
+  }
+
+  stats.timeMs = +(endTime - startTime).toFixed(2);
+
+  return {path, stats};
+}

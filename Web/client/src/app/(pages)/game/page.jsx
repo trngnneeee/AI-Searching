@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
-
-import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar } from "@/app/helpers/algorithm.helper";
+import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar, measurePath } from "@/app/helpers/algorithm.helper";
+import { useStatsStore } from "@/store/statStore";
 
 export default function GamePage() {
+  const { addStats } = useStatsStore()
   const router = useRouter();
   const [matrix, setMatrix] = useState(Array.from({ length: 25 }, () =>
     Array.from({ length: 25 }, () => 0)
@@ -50,7 +51,6 @@ export default function GamePage() {
 
     return matrix;
   }
-
 
   const handleGenerate = () => {
     const newMatrix = generateWalkableMatrix();
@@ -99,17 +99,19 @@ export default function GamePage() {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runDFS(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runDFS, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
             drawPath(path, newMatrix)
+            addStats('DFS', stats)
           }
           break;
         }
@@ -118,131 +120,145 @@ export default function GamePage() {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runBFS(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runBFS, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('BFS', stats)
           }
           break;
         }
-      case "A*": 
+      case "A*":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runAStar(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runAStar, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('A*', stats)
           }
           break;
         }
-      case "ucs": 
+      case "ucs":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runUCS(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runUCS, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('UCS', stats)
           }
           break;
         }
-      case "iddfs": 
+      case "iddfs":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runIDDFS(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runIDDFS, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('IDDFS', stats)
           }
           break;
         }
-      case "bids": 
+      case "bids":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runBi_Directional_Search(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runBi_Directional_Search, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('Bi_Directional_Search', stats)
           }
           break;
         }
-      case "bs": 
+      case "bs":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runBeamSearch(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runBeamSearch, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('BeamSearch', stats)
           }
           break;
         }
-      case "idastar": 
+      case "idastar":
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const path = await runIDAStar(matrix, start, goal, (r, c) => {
+          const { path, stats } = await measurePath(runIDAStar, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4; // visited
+              newMatrix[r][c] = 4;
               setMatrix([...newMatrix]);
             }
           }, 10);
+
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
           }
           else {
-            drawPath(path, newMatrix);
+            drawPath(path, newMatrix)
+            addStats('IDA*', stats)
           }
           break;
         }

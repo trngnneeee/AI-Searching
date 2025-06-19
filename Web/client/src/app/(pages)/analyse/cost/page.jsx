@@ -1,6 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useStatsStore } from '@/store/statStore';
+
 
 export default function CostPage() {
+  const { statsList } = useStatsStore();
+
   return (
     <>
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
