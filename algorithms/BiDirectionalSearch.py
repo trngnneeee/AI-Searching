@@ -1,3 +1,4 @@
+import time
 from Pen import Pen
 from maze import drawPath
 from collections import deque
@@ -81,6 +82,8 @@ def drawMazeBiDirectionalSearch(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
+    t0 = time.time()
     correctPath, path = generateBiDirectionalSearch(maze, start, goal)
+    t1 = time.time()
     
     drawPath(correctPath, path, start, goal, maze)

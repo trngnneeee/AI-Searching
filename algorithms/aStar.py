@@ -1,4 +1,5 @@
 import heapq
+import time
 from Pen import Pen
 from maze import drawPath
 
@@ -68,6 +69,8 @@ def drawMazeAStar(maze):
             elif maze[y][x] == 3:
                 goal = (x, y)
 
-    correct_path, path = generateAStarPath(maze, start, goal)
+    t0 = time.time()
+    correctPath, path = generateAStarPath(maze, start, goal)
+    t1 = time.time()
 
-    drawPath(correct_path, path, start, goal, maze)
+    drawPath(correctPath, path, start, goal, maze)
