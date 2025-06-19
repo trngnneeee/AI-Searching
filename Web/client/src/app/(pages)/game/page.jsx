@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { IoMdArrowBack } from "react-icons/io";
 
 import { runDFS, runBFS } from "@/app/helpers/algorithm.helper";
 
@@ -139,6 +140,10 @@ export default function GamePage() {
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex justify-between pt-[50px] px-[100px]">
           <div>
+            <button href="/" className="mb-[50px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
+              <IoMdArrowBack />
+              <div>HOME</div>
+            </button>
             <div className="px-[40px] py-[50px] bg-[#001835] border-[3px] border-[#056092] rounded-[30px] flex flex-col gap-[30px] w-[400px]">
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
