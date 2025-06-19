@@ -40,7 +40,6 @@ def regenerateMaze():
     maze.clearPath()  # Xóa đường đi cũ
     
     level = maze.generateMaze(maze_height, maze_width)
-    # Không dùng turtle.clear() mà chỉ vẽ lại maze
     maze.setup_maze(level)
     DFS.drawMazeDFS(level)
 # Danh sách các nút thuật toán và thông tin liên quan
@@ -58,7 +57,6 @@ button_specs = [
     ("IDDFS", lambda: IDDFS.drawMazeIDDFS(level), 0.0, 0.0, "nw", 500, 750),
 ]
 
-# Tạo và đặt nút dựa trên cấu hình trên
 all_buttons = []
 for text, cmd, relx, rely, anchor, x, y in button_specs:
     btn = tk.Button(root, text=text, font=("Arial", 24, "bold"),
@@ -67,7 +65,6 @@ for text, cmd, relx, rely, anchor, x, y in button_specs:
     btn.place(relx=relx, rely=rely, anchor=anchor, x=x, y=y)
     all_buttons.append(btn)
 
-# Đăng ký danh sách nút để maze có thể disable chúng
 maze.register_buttons(all_buttons)
 
 #Turn off screen update
