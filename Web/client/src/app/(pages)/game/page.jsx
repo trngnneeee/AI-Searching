@@ -1,23 +1,127 @@
 "use client"
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { runDFS, runBFS } from "@/app/helpers/algorithm.helper";
 
 export default function GamePage() {
   const router = useRouter();
-  
+  const [matrix, setMatrix] = useState(Array.from({ length: 25 }, () =>
+    Array.from({ length: 25 }, () => 0)
+  ));
+  const [alg, setAlg] = useState("");
+  const [start, setStart] = useState(null);
+  const [goal, setGoal] = useState(null);
+
+
+  const handleGenerate = () => {
+    const newMatrix = Array.from({ length: 25 }, () =>
+      Array.from({ length: 25 }, () => Math.random() < 0.5 ? 0 : 1)
+    );
+
+    const totalCells = 25 * 25;
+
+    const first = Math.floor(Math.random() * totalCells);
+    let second;
+    do {
+      second = Math.floor(Math.random() * totalCells);
+    } while (second === first);
+
+    const [r1, c1] = [Math.floor(first / 25), first % 25];
+    const [r2, c2] = [Math.floor(second / 25), second % 25];
+
+    newMatrix[r1][c1] = 2;
+    newMatrix[r2][c2] = 3;
+
+    setStart([r1, c1]);
+    setGoal([r2, c2]);
+
+    setMatrix(newMatrix);
+  }
+
+  const handleClear = () => {
+    setMatrix(Array.from({ length: 25 }, () =>
+      Array.from({ length: 25 }, () => 0)
+    ));
+  }
+
+  const drawPath = async (path, newMatrix) => {
+    for (const [r, c] of path) {
+      if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+        newMatrix[r][c] = 5; 
+        setMatrix([...newMatrix]);
+        await new Promise(res => setTimeout(res, 20));
+      }
+    }
+  }
+
+  const handlePlay = async () => {
+    const isAllZero = matrix.every(row => row.every(cell => cell === 0));
+    if (isAllZero) {
+      alert("Vui lòng generate ma trận!");
+      return;
+    }
+
+    if (alg == "") {
+      alert("Vui lòng chọn thuật toán!");
+      return;
+    }
+
+    switch (alg) {
+      case "dfs":
+        {
+          const newMatrix = matrix.map(row => [...row]);
+
+          const path = await runDFS(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else{
+            drawPath(path, newMatrix)
+          }
+          break;
+        }
+      case "bfs":
+        {
+          const newMatrix = matrix.map(row => [...row]);
+
+          const path = await runBFS(matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4; // visited
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix);
+          }
+          break;
+        }
+    }
+  }
+
   return (
     <>
-      <div className="bg-[url('/main.png')] w-full h-screen bg-cover bg-center bg-no-repeat">
+      <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex justify-between pt-[50px] px-[100px]">
           <div>
             <div className="px-[40px] py-[50px] bg-[#001835] border-[3px] border-[#056092] rounded-[30px] flex flex-col gap-[30px] w-[400px]">
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
+                onChange={(event) => setAlg(event.target.value)}
               >
                 <option value={""}>-- ALGORITHMS --</option>
-                <option value={""}>DFS</option>
-                <option value={""}>BFS</option>
+                <option value={"dfs"}>DFS</option>
+                <option value={"bfs"}>BFS</option>
                 <option value={""}>A*</option>
                 <option value={""}>UCS</option>
                 <option value={""}>IDDFS</option>
@@ -36,36 +140,30 @@ export default function GamePage() {
                 <option value={"/analyse/cost"}>COST</option>
                 <option value={"analyse/processing-time"}>PROCESSING TIME</option>
               </select>
-              <button
-                className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] border-[3px] border-[#056092] outline-none cursor-pointer"
-                style={{ textShadow: '0 0 10px #87FEFE' }}
-              >
-                GENERATE MAZE
-              </button>
             </div>
-            <div className="mt-[80px]">
-              <div 
+            <div className="mt-[50px]">
+              <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Path Length: </div>
                 <span>0</span>
               </div>
-              <div 
+              <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Nodes Explored: </div>
                 <span>0</span>
               </div>
-              <div 
+              <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Cost: </div>
                 <span>0</span>
               </div>
-              <div 
+              <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
@@ -75,21 +173,55 @@ export default function GamePage() {
             </div>
           </div>
           <div>
-            <div className="bg-[#ffffff34] w-[673px] h-[500px] border-[3px] border-[#056092] mb-[30px]">
-              {/* Main Game Here */}
+            <div className="bg-[#ffffff34] w-[700px] h-[500px] border-[3px] border-[#056092] mb-[30px] overflow-hidden">
+              {/* Main Game */}
+              <div
+                className="grid w-full h-full"
+                style={{
+                  gridTemplateColumns: `repeat(${matrix[0].length}, 1fr)`,
+                  gridTemplateRows: `repeat(${matrix.length}, 1fr)`
+                }}
+              >
+                {matrix.flatMap((row, rowIndex) =>
+                  row.map((cell, colIndex) => (
+                    <div
+                      key={`${rowIndex}-${colIndex}`}
+                      className={`border-[1px] border-[#ddd] ${cell === 0 ? "bg-white" :
+                        cell === 1 ? "bg-black" :
+                          cell === 2 ? "bg-red-500" :
+                            cell === 3 ? "bg-green-500" :
+                              cell === 4 ? "bg-blue-300" :
+                                cell === 5 ? "bg-yellow-400" : ""
+                        }`}
+                    />
+                  ))
+                )}
+              </div>
+
+              {/* End Main Game */}
             </div>
+
             <div className="flex justify-between">
               <button
                 className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
+                onClick={handleClear}
               >
                 CLEAR
               </button>
               <button
                 className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
+                onClick={handlePlay}
               >
                 GO
+              </button>
+              <button
+                className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
+                style={{ textShadow: '0 0 10px #87FEFE' }}
+                onClick={handleGenerate}
+              >
+                GENERATE
               </button>
             </div>
           </div>

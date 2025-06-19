@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function CostPage() {
   return (
     <>
-      <div className="bg-[url('/main.png')] w-full h-screen bg-cover bg-center bg-no-repeat">
+      <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex p-[20px]">
           <Link
             href="/game"
