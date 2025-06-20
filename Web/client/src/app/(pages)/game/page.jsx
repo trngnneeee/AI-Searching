@@ -83,6 +83,18 @@ export default function GamePage() {
     );
   }
 
+  function findPoint(value, matrix) {
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j] === value) {
+          return [i, j];
+        }
+      }
+    }
+    return null;
+  }
+
+
   const handlePlay = async () => {
     const isAllZero = matrix.every(row => row.every(cell => cell === 0));
     if (isAllZero) {
@@ -100,6 +112,14 @@ export default function GamePage() {
         {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const currentStart = findPoint(2, matrix);
+          const currentGoal = findPoint(3, matrix);
+
+          if (!currentStart || !currentGoal) {
+            alert("Thiếu start hoặc goal!");
+            return;
+          }
 
           const { path, stats } = await measurePath(runDFS, matrix, start, goal, (r, c) => {
             if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
@@ -267,16 +287,62 @@ export default function GamePage() {
     }
   }
 
+  const [selectMode, setSelectMode] = useState("");
+  const handleCellClick = (row, col) => {
+    const newMatrix = matrix.map(row => [...row]);
+    if (selectMode == "wall") {
+      if (matrix[row][col] != 2 && matrix[row][col] != 3) {
+        newMatrix[row][col] = 1;
+        setMatrix(newMatrix);
+      }
+    }
+    if (selectMode == "delete") {
+      newMatrix[row][col] = 0;
+      setMatrix(newMatrix);
+    }
+    if (selectMode == "start") {
+      if (start) newMatrix[start[0]][start[1]] = 0;
+      newMatrix[row][col] = 2;
+      setStart([row, col]);
+      setMatrix(newMatrix);
+      setSelectMode("");
+    }
+    if (selectMode == "end") {
+      if (goal) newMatrix[goal[0]][goal[1]] = 0;
+      newMatrix[row][col] = 3;
+      setGoal([row, col]);
+      setMatrix(newMatrix);
+      setSelectMode("");
+    }
+  }
+
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  const handleCellDraw = (row, col) => {
+    if (selectMode == "wall") {
+      if (matrix[row][col] != 2 && matrix[row][col] != 3) {
+        const newMatrix = matrix.map(row => [...row]);
+        newMatrix[row][col] = 1;
+        setMatrix(newMatrix)
+      }
+    }
+    if (selectMode == "delete") {
+      const newMatrix = matrix.map(row => [...row]);
+      newMatrix[row][col] = 0;
+      setMatrix(newMatrix)
+    }
+  }
+
   return (
     <>
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex justify-between pt-[50px] px-[100px]">
           <div>
-            <button href="/" className="mb-[50px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
+            <button href="/" className="mb-[20px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
               <IoMdArrowBack />
               <div>HOME</div>
             </button>
-            <div className="px-[40px] py-[50px] bg-[#001835] border-[3px] border-[#056092] rounded-[30px] flex flex-col gap-[30px] w-[400px]">
+            <div className="px-[40px] py-[30px] bg-[#001835] border-[3px] border-[#056092] rounded-[30px] flex flex-col gap-[30px] w-[400px]">
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
@@ -302,6 +368,18 @@ export default function GamePage() {
                 <option value={"/analyse/nodes-explored"}>NODES EXPLORED</option>
                 <option value={"/analyse/cost"}>COST</option>
                 <option value={"analyse/processing-time"}>PROCESSING TIME</option>
+              </select>
+              <select
+                className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
+                style={{ textShadow: '0 0 10px #87FEFE' }}
+                onChange={(event) => setSelectMode(event.target.value)}
+                value={selectMode}
+              >
+                <option value={""}>-- SET MODE --</option>
+                <option value={"wall"}>WALL</option>
+                <option value={"delete"}>DELETE WALL</option>
+                <option value={"start"}>START</option>
+                <option value={"end"}>GOAL</option>
               </select>
             </div>
             <div className="mt-[50px]">
@@ -344,27 +422,37 @@ export default function GamePage() {
                   gridTemplateColumns: `repeat(${matrix[0].length}, 1fr)`,
                   gridTemplateRows: `repeat(${matrix.length}, 1fr)`
                 }}
+                onMouseUp={() => setIsDrawing(false)}
+                onMouseLeave={() => setIsDrawing(false)}
               >
                 {matrix.flatMap((row, rowIndex) =>
                   row.map((cell, colIndex) => (
-                    <div
+                    <button
                       key={`${rowIndex}-${colIndex}`}
-                      className={`${cell === 0 ? "bg-[#22658A]" :
+                      onClick={() => handleCellClick(rowIndex, colIndex)}
+                      onMouseDown={() => {
+                        setIsDrawing(true);
+                        handleCellDraw(rowIndex, colIndex);
+                      }}
+                      onMouseEnter={() => {
+                        if (isDrawing) handleCellDraw(rowIndex, colIndex);
+                      }}
+                      className={`border-[#ddd] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[#22658A]" :
                         cell === 1 ? "bg-[#01122C]" :
                           cell === 2 ? "bg-[white] text-[#01122C]" :
                             cell === 3 ? "bg-[white] text-[#01122C]" :
-                              cell === 4 ? "bg-[orange]" :
-                                cell === 5 ? "bg-[#77E2E4]" : ""
+                              cell === 4 ? "bg-[#77E2E4]" :
+                                cell === 5 ? "bg-[orange]" : ""
                         } flex items-center justify-center`}
+                      style={{ boxSizing: 'border-box' }}
                     >
-                      {cell === 3 && (
-                        <AiFillHome className="w-6 h-6" />
+                      {cell === 2 && (
+                        <AiFillHome />
                       )}
-                      {cell == 2 && (
-                        <FiTarget className="w-full h-full"/>
+                      {cell == 3 && (
+                        <FiTarget />
                       )}
-                    </div>
-
+                    </button>
                   ))
                 )}
               </div>
