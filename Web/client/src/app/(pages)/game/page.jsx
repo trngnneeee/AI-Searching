@@ -24,32 +24,25 @@ export default function GamePage() {
   const generateWalkableMatrix = (size = 25) => {
     const matrix = Array.from({ length: size }, () => Array(size).fill(1));
 
-    let newStart = start;
-    let newGoal = goal;
-    if (!start || !goal)
-    {
-      newStart = [0, Math.floor(Math.random() * size)];
-      newGoal = [size - 1, Math.floor(Math.random() * size)];
-      setStart(newStart);
-      setGoal(newGoal);
-    }
+    let newStart = start && Array.isArray(start) ? start : [0, Math.floor(Math.random() * size)];
+    let newGoal = goal && Array.isArray(goal) ? goal : [size - 1, Math.floor(Math.random() * size)];
 
-    let [r, c] = start;
+    let [r, c] = newStart;
     matrix[r][c] = 2;
 
-    while (r !== goal[0] || c !== goal[1]) {
-      if (r < goal[0]) r++;
-      else if (r > goal[0]) r--;
+    while (r !== newGoal[0] || c !== newGoal[1]) {
+      if (r < newGoal[0]) r++;
+      else if (r > newGoal[0]) r--;
 
       matrix[r][c] = 0;
 
-      if (c < goal[1]) c++;
-      else if (c > goal[1]) c--;
+      if (c < newGoal[1]) c++;
+      else if (c > newGoal[1]) c--;
 
       matrix[r][c] = 0;
     }
 
-    matrix[goal[0]][goal[1]] = 3;
+    matrix[newGoal[0]][newGoal[1]] = 3;
 
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -59,18 +52,22 @@ export default function GamePage() {
       }
     }
 
-    return matrix;
+    return { matrix, newStart, newGoal };
   }
 
   const handleGenerate = () => {
-    const newMatrix = generateWalkableMatrix();
+    const { matrix: newMatrix, newStart, newGoal } = generateWalkableMatrix();
     setMatrix(newMatrix);
+    setStart(newStart);
+    setGoal(newGoal);
   }
 
   const handleClear = () => {
     setMatrix(Array.from({ length: 25 }, () =>
       Array.from({ length: 25 }, () => 0)
     ));
+    setStart(null);
+    setGoal(null);
   }
 
   // Set giá trị cho các tọa độ là đường đi thành 5 
