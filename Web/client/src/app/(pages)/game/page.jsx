@@ -5,6 +5,8 @@ import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar, measurePath } from "@/app/helpers/algorithm.helper";
 import { useStatsStore } from "@/store/statStore";
+import { AiFillHome } from "react-icons/ai";
+import { FiTarget } from "react-icons/fi";
 
 export default function GamePage() {
   const { addStats } = useStatsStore()
@@ -347,14 +349,22 @@ export default function GamePage() {
                   row.map((cell, colIndex) => (
                     <div
                       key={`${rowIndex}-${colIndex}`}
-                      className={`border-[1px] border-[#ddd] ${cell === 0 ? "bg-white" :
-                        cell === 1 ? "bg-black" :
-                          cell === 2 ? "bg-red-500" :
-                            cell === 3 ? "bg-green-500" :
-                              cell === 4 ? "bg-blue-300" :
-                                cell === 5 ? "bg-yellow-400" : ""
-                        }`}
-                    />
+                      className={`${cell === 0 ? "bg-[#22658A]" :
+                        cell === 1 ? "bg-[#01122C]" :
+                          cell === 2 ? "bg-[white] text-[#01122C]" :
+                            cell === 3 ? "bg-[white] text-[#01122C]" :
+                              cell === 4 ? "bg-[orange]" :
+                                cell === 5 ? "bg-[#77E2E4]" : ""
+                        } flex items-center justify-center`}
+                    >
+                      {cell === 3 && (
+                        <AiFillHome className="w-6 h-6" />
+                      )}
+                      {cell == 2 && (
+                        <FiTarget className="w-full h-full"/>
+                      )}
+                    </div>
+
                   ))
                 )}
               </div>
