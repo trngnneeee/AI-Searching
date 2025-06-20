@@ -342,7 +342,7 @@ export default function GamePage() {
   return (
     <>
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
-        <div className="flex justify-between pt-[50px] px-[100px]">
+        <div className="flex gap-[30px] pt-[20px] px-[50px]">
           <div>
             <button href="/" className="mb-[20px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
               <IoMdArrowBack />
@@ -419,8 +419,8 @@ export default function GamePage() {
               </div>
             </div>
           </div>
-          <div>
-            <div className="bg-[#ffffff34] w-[700px] h-[500px] border-[3px] border-[#056092] mb-[30px] overflow-hidden">
+          <div className="flex gap-[20px] ml-[20px]">
+            <div className="w-[650px] h-[650px] overflow-hidden">
               {/* Main Game */}
               <div
                 className="grid w-full h-full"
@@ -443,20 +443,24 @@ export default function GamePage() {
                       onMouseEnter={() => {
                         if (isDrawing) handleCellDraw(rowIndex, colIndex);
                       }}
-                      className={`border-[#ddd] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[#22658A]" :
+                      className={`border-[#123554] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[#22658A]" :
                         cell === 1 ? "bg-[#01122C]" :
                           cell === 2 ? "bg-[white] text-[#01122C]" :
                             cell === 3 ? "bg-[white] text-[#01122C]" :
                               cell === 4 ? "bg-[#77E2E4]" :
                                 cell === 5 ? "bg-[orange]" : ""
                         } flex items-center justify-center`}
-                      style={{ boxSizing: 'border-box' }}
+                      style={{ 
+                        boxSizing: 'border-box',
+                        width: '26px',
+                        height: '26px',
+                      }}
                     >
                       {cell === 2 && (
-                        <AiFillHome />
+                        <AiFillHome className="w-full h-full" />
                       )}
                       {cell == 3 && (
-                        <FiTarget />
+                        <FiTarget className="w-full h-full" />
                       )}
                     </button>
                   ))
@@ -465,8 +469,7 @@ export default function GamePage() {
 
               {/* End Main Game */}
             </div>
-
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-[20px] justify-center">
               <button
                 className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
