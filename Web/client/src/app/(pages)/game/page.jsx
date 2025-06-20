@@ -18,7 +18,8 @@ export default function GamePage() {
   const [start, setStart] = useState(null);
   const [goal, setGoal] = useState(null);
 
-  function generateWalkableMatrix(size = 25) {
+  // Gen 1 maze random đảm bảo có đường đi từ start đến goal
+  const generateWalkableMatrix = (size = 25) => {
     const matrix = Array.from({ length: size }, () => Array(size).fill(1));
 
     const start = [0, Math.floor(Math.random() * size)];
@@ -65,6 +66,7 @@ export default function GamePage() {
     ));
   }
 
+  // Set giá trị cho các tọa độ là đường đi thành 5 
   const drawPath = async (path, newMatrix) => {
     for (const [r, c] of path) {
       if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
@@ -75,6 +77,7 @@ export default function GamePage() {
     }
   }
 
+  // Reset giá trị ma trận về 0
   function resetMatrixStates(matrix) {
     return matrix.map(row =>
       row.map(cell =>
@@ -83,6 +86,7 @@ export default function GamePage() {
     );
   }
 
+  // Tìm tọa độ 1 giá trị trong ma trận
   function findPoint(value, matrix) {
     for (let i = 0; i < matrix.length; i++) {
       for (let j = 0; j < matrix[i].length; j++) {
@@ -93,7 +97,6 @@ export default function GamePage() {
     }
     return null;
   }
-
 
   const handlePlay = async () => {
     const isAllZero = matrix.every(row => row.every(cell => cell === 0));
@@ -287,6 +290,7 @@ export default function GamePage() {
     }
   }
 
+  // Toggle hành động click
   const [selectMode, setSelectMode] = useState("");
   const handleCellClick = (row, col) => {
     const newMatrix = matrix.map(row => [...row]);
@@ -316,8 +320,8 @@ export default function GamePage() {
     }
   }
 
+  // Toggle hành động vẽ
   const [isDrawing, setIsDrawing] = useState(false);
-
   const handleCellDraw = (row, col) => {
     if (selectMode == "wall") {
       if (matrix[row][col] != 2 && matrix[row][col] != 3) {
