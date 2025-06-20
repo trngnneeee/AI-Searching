@@ -446,7 +446,7 @@ export default function GamePage() {
                       onMouseEnter={() => {
                         if (isDrawing) handleCellDraw(rowIndex, colIndex);
                       }}
-                      className={`border-[#123554] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[#22658A]" :
+                      className={`border-[#123554] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[rgba(255,255,255,0.46)]" :
                         cell === 1 ? "bg-[#01122C]" :
                           cell === 2 ? "bg-[white] text-[#01122C]" :
                             cell === 3 ? "bg-[white] text-[#01122C]" :
@@ -464,7 +464,7 @@ export default function GamePage() {
                           style={{
                             width: '100%',
                             height: '100%',
-                            backgroundImage: 'url("/main.png")',
+                            backgroundImage: 'url("/wall.png")',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             borderRadius: '4px'
