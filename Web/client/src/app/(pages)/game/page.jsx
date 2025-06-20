@@ -24,10 +24,15 @@ export default function GamePage() {
   const generateWalkableMatrix = (size = 25) => {
     const matrix = Array.from({ length: size }, () => Array(size).fill(1));
 
-    const start = [0, Math.floor(Math.random() * size)];
-    const goal = [size - 1, Math.floor(Math.random() * size)];
-    setStart(start);
-    setGoal(goal);
+    let newStart = start;
+    let newGoal = goal;
+    if (!start || !goal)
+    {
+      newStart = [0, Math.floor(Math.random() * size)];
+      newGoal = [size - 1, Math.floor(Math.random() * size)];
+      setStart(newStart);
+      setGoal(newGoal);
+    }
 
     let [r, c] = start;
     matrix[r][c] = 2;
@@ -342,7 +347,7 @@ export default function GamePage() {
   return (
     <>
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
-        <div className="flex gap-[30px] pt-[20px] px-[50px]">
+        <div className="flex justify-between pt-[20px] px-[50px]">
           <div>
             <button href="/" className="mb-[20px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
               <IoMdArrowBack />
@@ -419,7 +424,7 @@ export default function GamePage() {
               </div>
             </div>
           </div>
-          <div className="flex gap-[20px] ml-[20px]">
+          <div className="">
             <div className="w-[650px] h-[650px] overflow-hidden">
               {/* Main Game */}
               <div
@@ -481,29 +486,29 @@ export default function GamePage() {
 
               {/* End Main Game */}
             </div>
-            <div className="flex flex-col gap-[20px] justify-center">
-              <button
-                className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
-                style={{ textShadow: '0 0 10px #87FEFE' }}
-                onClick={handleClear}
-              >
-                CLEAR
-              </button>
-              <button
-                className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
-                style={{ textShadow: '0 0 10px #87FEFE' }}
-                onClick={handlePlay}
-              >
-                GO
-              </button>
-              <button
-                className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
-                style={{ textShadow: '0 0 10px #87FEFE' }}
-                onClick={handleGenerate}
-              >
-                GENERATE
-              </button>
-            </div>
+          </div>
+          <div className="flex flex-col gap-[20px] justify-center">
+            <button
+              className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
+              style={{ textShadow: '0 0 10px #87FEFE' }}
+              onClick={handleClear}
+            >
+              CLEAR
+            </button>
+            <button
+              className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] px-[50px] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
+              style={{ textShadow: '0 0 10px #87FEFE' }}
+              onClick={handlePlay}
+            >
+              GO
+            </button>
+            <button
+              className="text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
+              style={{ textShadow: '0 0 10px #87FEFE' }}
+              onClick={handleGenerate}
+            >
+              GENERATE
+            </button>
           </div>
         </div>
       </div>
