@@ -11,7 +11,7 @@ import { FiTarget } from "react-icons/fi";
 export default function GamePage() {
   const { addStats, stats } = useStatsStore();
   const latestStats = stats && stats.length > 0 ? stats[stats.length - 1] : null;
-  
+
   const router = useRouter();
   const [matrix, setMatrix] = useState(Array.from({ length: 25 }, () =>
     Array.from({ length: 25 }, () => 0)
@@ -450,12 +450,24 @@ export default function GamePage() {
                               cell === 4 ? "bg-[#77E2E4]" :
                                 cell === 5 ? "bg-[orange]" : ""
                         } flex items-center justify-center`}
-                      style={{ 
+                      style={{
                         boxSizing: 'border-box',
                         width: '26px',
                         height: '26px',
                       }}
                     >
+                      {cell === 1 && (
+                        <div
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: 'url("/main.png")',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            borderRadius: '4px'
+                          }}
+                        />
+                      )}
                       {cell === 2 && (
                         <AiFillHome className="w-full h-full" />
                       )}
