@@ -27,9 +27,6 @@ export default function GamePage() {
     let newStart = start && Array.isArray(start) ? start : [0, Math.floor(Math.random() * size)];
     let newGoal = goal && Array.isArray(goal) ? goal : [size - 1, Math.floor(Math.random() * size)];
 
-    setStart(newStart);
-    setGoal(newGoal);
-
     let [r, c] = newStart;
     matrix[r][c] = 2;
 
@@ -55,12 +52,14 @@ export default function GamePage() {
       }
     }
 
-    return matrix;
+    return { matrix, newStart, newGoal };
   }
 
   const handleGenerate = () => {
-    const newMatrix = generateWalkableMatrix();
+    const { matrix: newMatrix, newStart, newGoal } = generateWalkableMatrix();
     setMatrix(newMatrix);
+    setStart(newStart);
+    setGoal(newGoal);
   }
 
   const handleClear = () => {
