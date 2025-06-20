@@ -9,7 +9,9 @@ import { AiFillHome } from "react-icons/ai";
 import { FiTarget } from "react-icons/fi";
 
 export default function GamePage() {
-  const { addStats } = useStatsStore()
+  const { addStats, stats } = useStatsStore();
+  const latestStats = stats && stats.length > 0 ? stats[stats.length - 1] : null;
+  
   const router = useRouter();
   const [matrix, setMatrix] = useState(Array.from({ length: 25 }, () =>
     Array.from({ length: 25 }, () => 0)
@@ -392,28 +394,28 @@ export default function GamePage() {
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Path Length: </div>
-                <span>0</span>
+                <span>{latestStats?.pathLength ?? 0}</span>
               </div>
               <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Nodes Explored: </div>
-                <span>0</span>
+                <span>{latestStats?.nodesExplored ?? 0}</span>
               </div>
               <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Cost: </div>
-                <span>0</span>
+                <span>{latestStats?.cost ?? 0}</span>
               </div>
               <div
                 className="flex items-center gap-[10px] text-[#87FEFE] text-[24px] font-bold"
                 style={{ textShadow: '0 0 10px #87FEFE' }}
               >
                 <div>Processing Time: </div>
-                <span>0</span>
+                <span>{latestStats?.timeMs ?? 0}ms</span>
               </div>
             </div>
           </div>

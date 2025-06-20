@@ -1,17 +1,10 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export const useStatsStore = create((set) => ({
-  statsList: [],
-
-  // Thêm một bộ stats mới
-  addStats: (algorithmName, stats) =>
+  stats: [],
+  addStats: (alg, stats) =>
     set((state) => ({
-      statsList: [
-        ...state.statsList.filter(item => item.algorithm !== algorithmName), // tránh trùng
-        { algorithm: algorithmName, ...stats }
-      ]
+      stats: [...state.stats, { alg, ...stats }]
     })),
-
-  // Xóa tất cả stats
-  clearStats: () => set({ statsList: [] }),
+  clearStats: () => set({ stats: [] }),
 }));
