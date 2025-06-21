@@ -367,7 +367,7 @@ export default function GamePage() {
       <div className="bg-[url('/game.jpg')] w-full h-screen bg-cover bg-center bg-no-repeat">
         <div className="flex justify-between pt-[20px] px-[50px]">
           <div>
-            <button href="/" className="mb-[20px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
+            <button href="/" className="mb-[50px] px-[50px] text-[#87FEFE] bg-[#001835] hover:bg-[#58929e] py-[10px] text-[30px] font-extrabold border-[3px] border-[#056092] outline-none cursor-pointer w-[250px] flex items-center gap-[5px]" onClick={() => router.push("/")}>
               <IoMdArrowBack />
               <div>HOME</div>
             </button>
@@ -386,17 +386,6 @@ export default function GamePage() {
                 <option value={"bids"}>BI_DIRECTIONAL SEARCH</option>
                 <option value={"bs"}>BEAM SEARCH</option>
                 <option value={"idastar"}>IDA*</option>
-              </select>
-              <select
-                className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
-                style={{ textShadow: '0 0 10px #87FEFE' }}
-                onChange={(event) => router.push(event.target.value)}
-              >
-                <option value={""}>-- ANALYSE --</option>
-                <option value={"/analyse/path-length"}>PATH LENGTH</option>
-                <option value={"/analyse/nodes-explored"}>NODES EXPLORED</option>
-                <option value={"/analyse/cost"}>COST</option>
-                <option value={"analyse/processing-time"}>PROCESSING TIME</option>
               </select>
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
@@ -527,6 +516,17 @@ export default function GamePage() {
             >
               GENERATE
             </button>
+            <select
+              className="px-[10px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer w-[200px]"
+              style={{ textShadow: '0 0 10px #87FEFE' }}
+              onChange={(event) => router.push(event.target.value)}
+            >
+              <option value={""}>-- ANALYSE --</option>
+              <option value={"/analyse/path-length"}>PATH LENGTH</option>
+              <option value={"/analyse/nodes-explored"}>NODES EXPLORED</option>
+              <option value={"/analyse/cost"}>COST</option>
+              <option value={"analyse/processing-time"}>PROCESSING TIME</option>
+            </select>
           </div>
         </div>
       </div>
