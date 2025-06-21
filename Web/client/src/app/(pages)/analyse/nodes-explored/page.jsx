@@ -104,7 +104,16 @@ export default function NodesExploredPage() {
         </div>
         <div className="flex">
           <div className="bg-[#ffffff34] w-full h-[500px] mx-[100px] border-[3px] border-[#056092] mb-[30px] flex items-center justify-center">
-            <canvas ref={chartRef} width={900} height={400}></canvas>
+            {stats && stats.length > 0 ? (
+              <canvas ref={chartRef} width={900} height={400}></canvas>
+            ) : (
+              <div
+                className="text-[#87FEFE] text-[64px] font-bold"
+                style={{ textShadow: '0 0 10px #87FEFE' }}
+              >
+                Chưa có data...
+              </div>
+            )}
           </div>
         </div>
       </div>
