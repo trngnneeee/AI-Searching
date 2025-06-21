@@ -34,12 +34,16 @@ export default function GamePage() {
       if (r < newGoal[0]) r++;
       else if (r > newGoal[0]) r--;
 
-      matrix[r][c] = 0;
+      if ((r !== newStart[0] || c !== newStart[1]) && (r !== newGoal[0] || c !== newGoal[1])) {
+        matrix[r][c] = 0;
+      }
 
       if (c < newGoal[1]) c++;
       else if (c > newGoal[1]) c--;
 
-      matrix[r][c] = 0;
+      if ((r !== newStart[0] || c !== newStart[1]) && (r !== newGoal[0] || c !== newGoal[1])) {
+        matrix[r][c] = 0;
+      }
     }
 
     matrix[newGoal[0]][newGoal[1]] = 3;
