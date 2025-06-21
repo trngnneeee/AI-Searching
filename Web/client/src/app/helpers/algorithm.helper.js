@@ -114,7 +114,7 @@ export async function runBFS(matrix, start, goal, onVisit, delay = 10) {
   return null;
 }
 
-export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDepth = 50) {
+export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDepth = 500) {
   const rows = matrix.length;
   const cols = matrix[0].length;
 
