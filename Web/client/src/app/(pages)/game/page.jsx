@@ -215,22 +215,40 @@ export default function GamePage() {
           const cleanedMatrix = resetMatrixStates(matrix);
           const newMatrix = cleanedMatrix.map(row => [...row]);
 
-          const { path, stats } = await measurePath(runIDDFS, matrix, start, goal, (r, c) => {
-            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
-              newMatrix[r][c] = 4;
-              setMatrix([...newMatrix]);
-            }
-          }, 10);
+          const currentStart = findPoint(2, matrix);
+          const currentGoal = findPoint(3, matrix);
+
+          if (!currentStart || !currentGoal) {
+            alert("Thiếu start hoặc goal!");
+            return;
+          }
+
+          const estimatedDepth = Math.abs(currentStart[0] - currentGoal[0]) + Math.abs(currentStart[1] - currentGoal[1]);
+
+          const { path, stats } = await measurePath(
+            runIDDFS,
+            matrix,
+            currentStart,
+            currentGoal,
+            (r, c) => {
+              if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+                newMatrix[r][c] = 4;
+                setMatrix([...newMatrix]);
+              }
+            },
+            10,
+            estimatedDepth + 10
+          );
 
           if (!path) {
             alert("Không tìm thấy đường đi đến đích!");
-          }
-          else {
-            drawPath(path, newMatrix)
-            addStats('IDDFS', stats)
+          } else {
+            drawPath(path, newMatrix);
+            addStats("IDDFS", stats);
           }
           break;
         }
+
       case "bids":
         {
           const cleanedMatrix = resetMatrixStates(matrix);

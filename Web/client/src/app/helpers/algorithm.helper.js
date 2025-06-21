@@ -114,11 +114,15 @@ export async function runBFS(matrix, start, goal, onVisit, delay = 10) {
   return null;
 }
 
-export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDepth = 500) {
+export async function runIDDFS(matrix, start, goal, onVisit, delay = 5, maxDepth = 650) {
   const rows = matrix.length;
   const cols = matrix[0].length;
 
-  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+  const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+
+  function heuristic([x, y], [gx, gy]) {
+    return Math.abs(x - gx) + Math.abs(y - gy);
+  }
 
   function isValid(r, c, visited) {
     return (
@@ -133,13 +137,10 @@ export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDept
     if (depth < 0 || !isValid(r, c, visited)) return null;
 
     visited[r][c] = true;
-
-    // Giảm tần suất gọi delay để không bị chậm giữa chừng
-    if (++visitCounter.count % 5 === 0) {
+    if (++visitCounter.count % 10 === 0) {
+      onVisit?.(r, c);
       await sleep(delay);
     }
-
-    onVisit(r, c);
 
     if (r === goal[0] && c === goal[1]) {
       let path = [];
@@ -151,15 +152,20 @@ export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDept
       return path.reverse();
     }
 
-    const directions = [
+    let directions = [
       [1, 0], [-1, 0],
       [0, 1], [0, -1],
     ];
 
+    directions.sort((a, b) => {
+      const ha = heuristic([r + a[0], c + a[1]], goal);
+      const hb = heuristic([r + b[0], c + b[1]], goal);
+      return ha - hb;
+    });
+
     for (const [dr, dc] of directions) {
       const nr = r + dr;
       const nc = c + dc;
-
       if (isValid(nr, nc, visited)) {
         parent[nr][nc] = [r, c];
         const result = await dls(nr, nc, depth - 1, visited, parent, visitCounter);
@@ -167,10 +173,14 @@ export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDept
       }
     }
 
+    visited[r][c] = false; // 👈 Backtrack
     return null;
   }
 
-  for (let depth = 0; depth <= maxDepth; depth++) {
+  const estimatedDepth = heuristic(start, goal) + 10;
+  const limit = Math.min(estimatedDepth, maxDepth);
+
+  for (let depth = 1; depth <= maxDepth; depth += 2) {
     const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
     const parent = Array.from({ length: rows }, () => Array(cols).fill(null));
     const visitCounter = { count: 0 };
@@ -181,6 +191,7 @@ export async function runIDDFS(matrix, start, goal, onVisit, delay = 10, maxDept
 
   return null;
 }
+
 
 export async function runAStar(matrix, start, goal, onVisit, delay = 10) {
   const rows = matrix.length;

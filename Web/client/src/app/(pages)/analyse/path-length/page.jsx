@@ -15,12 +15,20 @@ export default function NodesExploredPage() {
   useEffect(() => {
     if (!chartRef.current || !stats || stats.length === 0) return;
 
+    const maxIndex = stats.reduce((maxIdx, curr, idx, arr) =>
+      curr.pathLength > arr[maxIdx].pathLength ? idx : maxIdx, 0
+    );
+
+    const backgroundColors = stats.map((_, idx) =>
+      idx === maxIndex ? '#FF4C4C' : '#87FEFE' 
+    );
+
     const data = {
       labels: stats.map((s, i) => s.alg || `Alg ${i + 1}`),
       datasets: [{
         label: 'Path Length',
         data: stats.map(s => s.pathLength),
-        backgroundColor: '#ddd',
+        backgroundColor: backgroundColors,
         borderColor: '#056092',
         borderWidth: 2
       }]
