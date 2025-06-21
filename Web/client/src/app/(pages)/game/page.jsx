@@ -9,16 +9,13 @@ import { AiFillHome } from "react-icons/ai";
 import { FiTarget } from "react-icons/fi";
 
 export default function GamePage() {
-  const { addStats, stats } = useStatsStore();
+  const { addStats, stats, clearStats, matrix, setMatrix, start, setStart, goal, setGoal } = useStatsStore();
   const latestStats = stats && stats.length > 0 ? stats[stats.length - 1] : null;
 
   const router = useRouter();
-  const [matrix, setMatrix] = useState(Array.from({ length: 25 }, () =>
-    Array.from({ length: 25 }, () => 0)
-  ));
   const [alg, setAlg] = useState("");
-  const [start, setStart] = useState(null);
-  const [goal, setGoal] = useState(null);
+  const [selectMode, setSelectMode] = useState("");
+  const [isDrawing, setIsDrawing] = useState(false);
 
   // Gen 1 maze random đảm bảo có đường đi từ start đến goal
   const generateWalkableMatrix = (size = 25) => {
@@ -60,6 +57,7 @@ export default function GamePage() {
   }
 
   const handleGenerate = () => {
+    if (stats && stats.length) clearStats();
     const { matrix: newMatrix, newStart, newGoal } = generateWalkableMatrix();
     setMatrix(newMatrix);
     setStart(newStart);
@@ -67,6 +65,7 @@ export default function GamePage() {
   }
 
   const handleClear = () => {
+    if (stats && stats.length) clearStats();
     setMatrix(Array.from({ length: 25 }, () =>
       Array.from({ length: 25 }, () => 0)
     ));
@@ -299,9 +298,9 @@ export default function GamePage() {
   }
 
   // Toggle hành động click
-  const [selectMode, setSelectMode] = useState("");
   const handleCellClick = (row, col) => {
     const newMatrix = matrix.map(row => [...row]);
+    if (stats && stats.length) clearStats();
     if (selectMode == "wall") {
       if (matrix[row][col] != 2 && matrix[row][col] != 3) {
         newMatrix[row][col] = 1;
@@ -329,8 +328,8 @@ export default function GamePage() {
   }
 
   // Toggle hành động vẽ
-  const [isDrawing, setIsDrawing] = useState(false);
   const handleCellDraw = (row, col) => {
+    if (stats && stats.length) clearStats();
     if (selectMode == "wall") {
       if (matrix[row][col] != 2 && matrix[row][col] != 3) {
         const newMatrix = matrix.map(row => [...row]);
