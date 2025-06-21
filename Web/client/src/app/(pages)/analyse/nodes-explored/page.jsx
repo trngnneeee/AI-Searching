@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useStatsStore } from '@/store/statStore';
 
+
 export default function CostPage() {
   const { statsList } = useStatsStore();
   
