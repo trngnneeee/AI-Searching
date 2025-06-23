@@ -7,6 +7,11 @@
 - Thống kê số node đã duyệt, độ dài đường đi, chi phí, thời gian xử lý
 - So sánh kết quả các thuật toán bằng biểu đồ
 ## Công nghệ sử dụng
+- **Next.js** (React)
+- **Zustand** (quản lý state)
+- **Chart.js** (vẽ biểu đồ)
+- **Tailwind CSS** (giao diện)
+- **React Icons**
 ## Cài đặt & chạy local
 # Cài dependencies
 yarn install
