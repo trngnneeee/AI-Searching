@@ -173,7 +173,7 @@ export async function runIDDFS(matrix, start, goal, onVisit, delay = 5, maxDepth
       }
     }
 
-    visited[r][c] = false; // 👈 Backtrack
+    visited[r][c] = false; 
     return null;
   }
 
