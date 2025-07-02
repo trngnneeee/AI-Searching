@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
-import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar, measurePath } from "@/app/helpers/algorithm.helper";
+import { runDFS, runBFS, runAStar, runIDDFS, runUCS, runBi_Directional_Search, runBeamSearch, runIDAStar, measurePath, runGreedyBestFirst } from "@/app/helpers/algorithm.helper";
 import { useStatsStore } from "@/store/statStore";
 import { AiFillHome } from "react-icons/ai";
 import { FiTarget } from "react-icons/fi";
@@ -312,6 +312,27 @@ export default function GamePage() {
           }
           break;
         }
+      case "greedy":
+        {
+          const cleanedMatrix = resetMatrixStates(matrix);
+          const newMatrix = cleanedMatrix.map(row => [...row]);
+
+          const { path, stats } = await measurePath(runGreedyBestFirst, matrix, start, goal, (r, c) => {
+            if (matrix[r][c] !== 2 && matrix[r][c] !== 3) {
+              newMatrix[r][c] = 4;
+              setMatrix([...newMatrix]);
+            }
+          }, 10);
+
+          if (!path) {
+            alert("Không tìm thấy đường đi đến đích!");
+          }
+          else {
+            drawPath(path, newMatrix)
+            addStats('Greedy', stats)
+          }
+          break;
+        }
     }
   }
 
@@ -386,6 +407,7 @@ export default function GamePage() {
                 <option value={"bids"}>BI_DIRECTIONAL SEARCH</option>
                 <option value={"bs"}>BEAM SEARCH</option>
                 <option value={"idastar"}>IDA*</option>
+                <option value={"greedy"}>Greedy Best-First Search</option>
               </select>
               <select
                 className="px-[20px] py-[15px] text-[20px] font-bold text-[#87FEFE] bg-[#001835] border-[3px] border-[#056092] outline-none cursor-pointer"
@@ -455,12 +477,12 @@ export default function GamePage() {
                       onMouseEnter={() => {
                         if (isDrawing) handleCellDraw(rowIndex, colIndex);
                       }}
-                      className={`border-[#123554] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-[rgba(255,255,255,0.46)]" :
-                        cell === 1 ? "bg-[#01122C]" :
+                      className={`border-[#123554] border-[0.5px] cursor-pointer ${cell === 0 ? "bg-white" :
+                        cell === 1 ? "bg-black" :
                           cell === 2 ? "bg-[white] text-[#01122C]" :
                             cell === 3 ? "bg-[white] text-[#01122C]" :
-                              cell === 4 ? "bg-[#77E2E4]" :
-                                cell === 5 ? "bg-[orange]" : ""
+                              cell === 4 ? "bg-[yellow]" :
+                                cell === 5 ? "bg-[green]" : ""
                         } flex items-center justify-center`}
                       style={{
                         boxSizing: 'border-box',
@@ -468,18 +490,6 @@ export default function GamePage() {
                         height: '26px',
                       }}
                     >
-                      {cell === 1 && (
-                        <div
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            backgroundImage: 'url("/wall.png")',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            borderRadius: '4px'
-                          }}
-                        />
-                      )}
                       {cell === 2 && (
                         <AiFillHome className="w-full h-full" />
                       )}

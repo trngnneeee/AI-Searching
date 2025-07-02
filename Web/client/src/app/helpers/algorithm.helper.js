@@ -1,3 +1,85 @@
+export async function runGreedyBestFirst(matrix, start, goal, onVisit, delay = 10) {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+
+  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  function heuristic(a, b) {
+    // Manhattan distance
+    return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+  }
+
+  function isValid(r, c) {
+    return (
+      r >= 0 && r < rows &&
+      c >= 0 && c < cols &&
+      matrix[r][c] !== 1
+    );
+  }
+
+  const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+  const parent = Array.from({ length: rows }, () => Array(cols).fill(null));
+
+  // Priority queue sử dụng heuristic value (chỉ h(n), không có g(n))
+  const pq = [[heuristic(start, goal), start]]; // [heuristic_value, position]
+  const openSet = new Set();
+  
+  const toKey = (r, c) => `${r},${c}`;
+  const [sr, sc] = start;
+  const [gr, gc] = goal;
+  
+  openSet.add(toKey(sr, sc));
+
+  while (pq.length > 0) {
+    // Sắp xếp để lấy node có heuristic nhỏ nhất (gần goal nhất)
+    pq.sort((a, b) => a[0] - b[0]);
+    const [_, [r, c]] = pq.shift();
+    
+    const key = toKey(r, c);
+    openSet.delete(key);
+
+    // Kiểm tra nếu đã thăm
+    if (visited[r][c]) continue;
+    
+    visited[r][c] = true;
+    onVisit(r, c);
+    await sleep(delay);
+
+    // Tìm thấy đích
+    if (r === gr && c === gc) {
+      let path = [];
+      let cur = [r, c];
+      while (cur) {
+        path.push(cur);
+        cur = parent[cur[0]][cur[1]];
+      }
+      return path.reverse();
+    }
+
+    const directions = [
+      [1, 0], [-1, 0],
+      [0, 1], [0, -1],
+    ];
+
+    for (const [dr, dc] of directions) {
+      const nr = r + dr;
+      const nc = c + dc;
+
+      if (!isValid(nr, nc) || visited[nr][nc]) continue;
+
+      const neighborKey = toKey(nr, nc);
+      if (!openSet.has(neighborKey)) {
+        parent[nr][nc] = [r, c];
+        const h = heuristic([nr, nc], goal);
+        pq.push([h, [nr, nc]]);
+        openSet.add(neighborKey);
+      }
+    }
+  }
+
+  return null; // Không tìm thấy đường đi
+}
+
 export async function runDFS(matrix, start, goal, onVisit, delay = 10) {
   const rows = matrix.length;
   const cols = matrix[0].length;
